@@ -40,7 +40,7 @@ function showDate() {
   const currentDate = date.toLocaleDateString("en-US", options);
   day.textContent = currentDate;
 }
-/Приветствие
+//Приветствие
 
 function showGreeting() {
   const date = new Date();
