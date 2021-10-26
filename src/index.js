@@ -96,3 +96,109 @@ async function getWeather() {
 }
 
 getWeather();
+
+// player
+
+const playList = [
+  {
+    title: "Aqua Caelestis",
+    src: "assets/sounds/Aqua Caelestis.mp3",
+    duration: "00:58",
+  },
+  {
+    title: "Ennio Morricone",
+    src: "assets/sounds/Ennio Morricone.mp3",
+    duration: "03:50",
+  },
+  {
+    title: "River Flows In You",
+    src: "assets/sounds/River Flows In You.mp3",
+    duration: "00:58",
+  },
+  {
+    title: "Summer Wind",
+    src: "assets/sounds/Summer Wind.mp3",
+    duration: "00:58",
+  },
+];
+
+const playListItem = document.querySelector(".play-list");
+
+for (let i = 0; i < playList.length; i++) {
+  const li = document.createElement("li");
+  playListItem.append(li);
+  li.textContent = playList[i].title;
+  li.classList.add("play-item");
+}
+
+const playBtn = document.querySelector(".play");
+const playPrev = document.querySelector(".play-prev");
+const playNext = document.querySelector(".play-next");
+const items = document.querySelectorAll(".play-item");
+let isPlay = false;
+const audio = new Audio();
+let playSong = 0;
+
+function getSong() {
+  const song = `${playList[playSong].src}`;
+  audio.src = song;
+  console.log(audio.src);
+}
+getSong();
+
+const playPause = () => {
+  if (isPlay) {
+    pauseAudio();
+  } else if (!isPlay) {
+    playAudio();
+  }
+};
+
+function playAudio() {
+  isPlay = true;
+  audio.play();
+  playBtn.classList.add("pause");
+}
+
+function pauseAudio() {
+  isPlay = false;
+  audio.pause();
+  playBtn.classList.remove("pause");
+}
+
+function playAudioPrev() {
+  if (playSong === 0) {
+    playSong = playList.length - 1;
+  } else {
+    playSong -= 1;
+  }
+  addClassToPlayListItem(playSong);
+  getSong();
+  playAudio();
+}
+
+function playAudioNext() {
+  if (playSong === playList.length - 1) {
+    playSong = 0;
+  } else {
+    playSong += 1;
+  }
+  addClassToPlayListItem(playSong);
+  getSong();
+  playAudio();
+}
+
+const addClassToPlayListItem = (item = 0) => {
+  if (items.length === 0) {
+  } else {
+    for (let index = 0; index < items.length; index++) {
+      items[index].classList.remove("item-active");
+    }
+  }
+  items[item].classList.add("item-active");
+};
+
+addClassToPlayListItem(playSong);
+playPrev.addEventListener("click", playAudioPrev);
+playNext.addEventListener("click", playAudioNext);
+playBtn.addEventListener("click", playPause);
